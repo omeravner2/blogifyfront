@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import MainPage from "./components/pages/MainPage.jsx";
 import Profile from "./components/pages/Profile.jsx";
 import PostsList from "./components/pages/PostsList.jsx";
+import LoginPage from "./components/authentication/LoginPage.jsx";
+import Register from "./components/authentication/Register.jsx";
 
 function App() {
   return (
@@ -11,8 +13,10 @@ function App() {
       <Navbar />
       <div>
         <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/register" element={<Register />} />
           <Route
-            path="/"
+            path="/mainpage"
             element={<PostsList url="http://127.0.0.1:8000/blogs/api/posts" />}
           />
           <Route path="/profile" element={<Profile myprofile={false} />} />
