@@ -10,17 +10,16 @@ import Register from "./components/authentication/Register.jsx";
 function App() {
   return (
     <Router>
-      <Navbar />
       <div>
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
           <Route
             path="/mainpage"
-            element={<PostsList url="http://127.0.0.1:8000/blogs/api/posts" />}
+            element={<MainPage url="http://127.0.0.1:8000/blogs/api/posts" />}
           />
           <Route path="/profile" element={<Profile myprofile={false} />} />
-          <Route path="/my-profile" element={<Profile myprofile={true} />} />
+          <Route path="/myprofile" element={<Profile myprofile={true} />} />
         </Routes>
       </div>
     </Router>

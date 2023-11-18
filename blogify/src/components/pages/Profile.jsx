@@ -11,6 +11,7 @@ import Post from "./Post";
 import MainPage from "./MainPage";
 import PostsList from "./PostsList";
 import { useEffect, useState } from "react";
+import Navbar from "./Navbar";
 
 export default function Profile(props) {
   const [profiledata, setProfileData] = useState(null);
@@ -18,9 +19,11 @@ export default function Profile(props) {
   const fetchdata = async () => {
     let url = null;
     if (props.myprofile) {
-      url = "http://127.0.0.1:8000/blogs/api/my-profile";
+      url = `http://127.0.0.1:8000/blogs/api/profile/${localStorage.getItem(
+        "userid"
+      )}/`;
     }
-    return fetch(url, { mode: "cors" })
+    return await fetch(url, { mode: "cors" })
       .then((response) => response.json())
       .then((d) => setProfileData(d));
   };
@@ -48,44 +51,54 @@ export default function Profile(props) {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <div
-        sx={{ display: "flex", justifyContent: "center", alignitems: "center" }}
-      >
-        <Card
+    <>
+      <Navbar />
+      <ThemeProvider theme={theme}>
+        <div
           sx={{
-            maxWidth: "1000px",
-            margin: "auto",
-            boxShadow: "none",
-            borderBottom: 2,
-            borderRadius: "0",
-            borderColor: theme.palette.profilecard.main,
+            display: "flex",
+            justifyContent: "center",
+            alignitems: "center",
           }}
         >
-          <CardHeader
-            avatar={
-              <Avatar
-                alt="profilepic"
-                src="/images/avatar.png"
-                sx={{ width: 110, height: 110 }}
-              />
-            }
-            title={
-              <Typography
-                variant="h3"
-                fontSize="20px"
-                fontWeight="fontWeightBold"
-              >
-                {profiledata?.username}
-              </Typography>
-            }
-            subheader={
-              <Typography fontSize="16px">this is the user bio</Typography>
-            }
-          ></CardHeader>
-        </Card>
-        <PostsList />
-      </div>
-    </ThemeProvider>
+          <Card
+            sx={{
+              maxWidth: "1000px",
+              margin: "auto",
+              boxShadow: "none",
+              borderBottom: 2,
+              borderRadius: "0",
+              borderColor: theme.palette.profilecard.main,
+            }}
+          >
+            <CardHeader
+              avatar={
+                <Avatar
+                  alt="profilepic"
+                  src={profiledata?.profile_picture}
+                  sx={{ width: 110, height: 110 }}
+                />
+              }
+              title={
+                <Typography
+                  sx={{ marginBottom: "10px" }}
+                  variant="h3"
+                  fontSize="20px"
+                  fontWeight="fontWeightBold"
+                >
+                  {`@${profiledata?.username} · ${profiledata?.first_name} ${profiledata?.last_name} `}
+                </Typography>
+              }
+              subheader={
+                <div>
+                  <Typography fontSize="16px">{profiledata?.bio}</Typography>
+                </div>
+              }
+            ></CardHeader>
+          </Card>
+          <PostsList />
+        </div>
+      </ThemeProvider>
+    </>
   );
 }

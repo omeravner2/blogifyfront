@@ -17,7 +17,7 @@ import { mdilHome, mdilSettings, mdilPlusBox } from "@mdi/light-js";
 import AddPost from "./AddPost";
 import { Link } from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar(props) {
   const [openaddpost, setOpenAddPost] = useState(false);
 
   const handleOpen = () => {
@@ -56,7 +56,7 @@ export default function Navbar() {
               />
               <Typography component="div" sx={{ flexGrow: 1 }}></Typography>
               <Stack direction="row" paddingRight="16%" alignItems="center">
-                <Link to="/">
+                <Link to="/mainpage">
                   <IconButton>
                     <Icon path={mdilHome} size={1} />
                   </IconButton>
@@ -69,9 +69,12 @@ export default function Navbar() {
                     <Icon path={mdilSettings} size={1} />
                   </IconButton>
                 </Link>
-                <Link to="/my-profile">
+                <Link to="/myprofile">
                   <IconButton>
-                    <Avatar alt="profilepic" src="/images/avatar.png" />
+                    <Avatar
+                      alt="profilepic"
+                      src={localStorage?.getItem("profile_picture")}
+                    />
                   </IconButton>
                 </Link>
               </Stack>

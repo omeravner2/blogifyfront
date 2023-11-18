@@ -11,8 +11,15 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Icon from "@mdi/react";
 import { mdilLock } from "@mdi/light-js";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   const theme = createTheme({
     palette: {
       logocolor: {
@@ -29,6 +36,26 @@ export default function LoginPage() {
       },
     },
   });
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const credentials = {
+      username: username,
+      password: password,
+    };
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/members/api/login",
+        credentials
+      );
+      alert(response.data.user.id);
+      localStorage.setItem("userid", JSON.stringify(response.data.user.id));
+      navigate("/mainpage");
+      // Handle success message
+    } catch (error) {
+      alert("Login failed:" + error.response.status); // Handle error message
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -66,6 +93,8 @@ export default function LoginPage() {
               id="username"
               label="Username"
               name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               autoComplete="username"
               autoFocus
             />
@@ -80,11 +109,14 @@ export default function LoginPage() {
               name="password"
               label="Password"
               type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               id="password"
               autoComplete="current-password"
             />
             <Button
               type="submit"
+              onClick={handleLogin}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, bgcolor: theme.palette.logocolor.main }}
