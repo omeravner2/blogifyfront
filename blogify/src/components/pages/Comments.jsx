@@ -20,9 +20,11 @@ import Icon from "@mdi/react";
 import { mdilPlus } from "@mdi/light-js";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Comments(props) {
   const [comments, setComments] = useState([]);
+  const [usercomment, setUserComment] = useState("");
 
   const fetchdata = async () => {
     return fetch(
@@ -39,6 +41,30 @@ export default function Comments(props) {
 
   const handleclosecomments = () => {
     props.setopendialog(false);
+  };
+
+  const submitcomment = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("body", usercomment);
+    formData.append("post", props.postid);
+    formData.append("author", localStorage.getItem("userid"));
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/blogs/api/comment/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setComments([...comments, response.data]);
+      setUserComment("");
+      // Handle success message
+    } catch (error) {
+      console.error(error.response.status); // Handle error message
+    }
   };
 
   const theme = createTheme({
@@ -98,9 +124,13 @@ export default function Comments(props) {
               size="small"
               rows="2"
               multiline
+              value={usercomment}
+              defaultValue={usercomment}
+              onChange={(e) => setUserComment(e.target.value)}
             ></TextField>
           </Stack>
           <Button
+            onClick={submitcomment}
             component="label"
             variant="outlined"
             sx={{

@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 import Icon from "@mdi/react";
+import { mdiHeart } from "@mdi/js";
 import { mdilComment, mdilHeart } from "@mdi/light-js";
 import Stack from "@mui/material/Stack";
 import { useEffect, useState } from "react";
@@ -22,6 +23,7 @@ export default function Post(props) {
   const [likespopover, setLikesPopOver] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [showcomments, setShowComments] = useState(false);
+  const [liked, setLiked] = useState(false);
 
   const format_date = new Date(props.date);
 
@@ -34,12 +36,39 @@ export default function Post(props) {
     setShowComments(true);
   };
 
+  const handlelike = async () => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/blogs/api/posts/${
+          props.postid
+        }/toggle_like/${localStorage.getItem("userid")}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      liked ? setLiked(false) : setLiked(true);
+    } catch (error) {
+      console.error("Error toggling like on the post:", error);
+    }
+  };
+
   const closelikespopver = () => setLikesPopOver(false);
 
   const fetchdata = async () => {
-    return fetch(url, { mode: "cors" })
-      .then((response) => response.json())
-      .then((d) => setLikes(d));
+    try {
+      const response = fetch(url, { mode: "cors" })
+        .then((response) => response.json())
+        .then((d) => setLikes(d));
+      if (likes.users_id.includes(localStorage.getItem("userid"))) {
+        setLiked(true);
+        alert("here");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -114,8 +143,12 @@ export default function Post(props) {
           <CardActions disableSpacing>
             <Stack>
               <div>
-                <IconButton>
-                  <Icon color="black" size="24px" path={mdilHeart} />
+                <IconButton onClick={handlelike}>
+                  {liked ? (
+                    <Icon color="red" size="24px" path={mdiHeart} />
+                  ) : (
+                    <Icon color="black" size="24px" path={mdilHeart} />
+                  )}
                 </IconButton>
                 <IconButton onClick={handlecomments}>
                   <Icon color="black" size="24px" path={mdilComment} />
