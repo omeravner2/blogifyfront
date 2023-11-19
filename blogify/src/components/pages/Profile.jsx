@@ -75,7 +75,7 @@ export default function Profile(props) {
               avatar={
                 <Avatar
                   alt="profilepic"
-                  src={profiledata?.profile_picture}
+                  src={profiledata?.profile.profile_picture}
                   sx={{ width: 110, height: 110 }}
                 />
               }
@@ -86,17 +86,23 @@ export default function Profile(props) {
                   fontSize="20px"
                   fontWeight="fontWeightBold"
                 >
-                  {`@${profiledata?.username} · ${profiledata?.first_name} ${profiledata?.last_name} `}
+                  {`@${profiledata?.profile.username} · ${profiledata?.profile.first_name} ${profiledata?.profile.last_name} `}
                 </Typography>
               }
               subheader={
                 <div>
-                  <Typography fontSize="16px">{profiledata?.bio}</Typography>
+                  <Typography fontSize="16px">
+                    {profiledata?.profile.bio}
+                  </Typography>
                 </div>
               }
             ></CardHeader>
           </Card>
-          <PostsList />
+          <PostsList
+            post_list={profiledata?.posts}
+            profile_pic={profiledata?.profile.profile_picture}
+            username={profiledata?.profile.username}
+          />
         </div>
       </ThemeProvider>
     </>

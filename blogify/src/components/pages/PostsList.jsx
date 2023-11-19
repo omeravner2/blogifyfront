@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { List, ListItem, darkScrollbar } from "@mui/material";
+import { List, ListItem, Typography, darkScrollbar } from "@mui/material";
 import Post from "./Post.jsx";
 
 export default function PostsList(props) {
@@ -24,8 +24,12 @@ export default function PostsList(props) {
                   likes={post.likes_count}
                   date={post.created_on}
                   photo={post.photo}
-                  profile={post.profile_picture}
-                  username={post.username}
+                  profile={
+                    post.profile_picture
+                      ? post.profile_picture
+                      : props.profile_pic
+                  }
+                  username={post.username ? post.username : props.username}
                   postid={post.id}
                 />
               }

@@ -61,122 +61,128 @@ export default function Post(props) {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <Card
-        sx={{
-          width: "550px",
-          border: 2,
-          borderColor: theme.palette.postbg.main,
-        }}
-      >
-        <CardHeader
-          sx={{ height: "30px" }}
-          avatar={
-            <IconButton sx={{ marginLeft: "-10px" }}>
-              <Avatar alt="profilepic" src={props.profile} />
-            </IconButton>
-          }
-          title={
-            <Typography
-              sx={{ marginLeft: "-20px" }}
-              variant="h1"
-              fontSize="17px"
-              fontWeight="fontWeightBold"
-            >
-              {props.username}
-            </Typography>
-          }
-        />
-        <CardContent sx={{ marginLeft: "10px" }}>
-          <div>
-            <Typography
-              variant="h1"
-              component="div"
-              fontSize={"15px"}
-              fontWeight="fontWeightBold"
-            >
-              {props.title}&nbsp;
-            </Typography>
-            <Typography variant="body2" fontSize={"15px"}>
-              {props.content.replace("</p>", "").replace("<p>", "")}
-            </Typography>
-          </div>
-        </CardContent>
-        {props.photo ? (
-          <CardMedia
-            sx={{ objectFit: "contain" }}
-            component="img"
-            image={props.photo}
-            alt="postimage"
-          />
-        ) : null}
-        <CardActions disableSpacing>
-          <Stack>
-            <div>
-              <IconButton>
-                <Icon color="black" size="24px" path={mdilHeart} />
+    <>
+      <ThemeProvider theme={theme}>
+        <Card
+          sx={{
+            width: "550px",
+            border: 2,
+            borderColor: theme.palette.postbg.main,
+          }}
+        >
+          <CardHeader
+            sx={{ height: "30px" }}
+            avatar={
+              <IconButton sx={{ marginLeft: "-10px" }}>
+                <Avatar alt="profilepic" src={props?.profile} />
               </IconButton>
-              <IconButton onClick={handlecomments}>
-                <Icon color="black" size="24px" path={mdilComment} />
-              </IconButton>
-            </div>
-            <Button onClick={showlikes}>
+            }
+            title={
               <Typography
-                variant="subtitle2"
-                style={{ color: "black", marginRight: "20px" }}
-                fontSize="12px"
+                sx={{ marginLeft: "-20px" }}
+                variant="h1"
+                fontSize="17px"
+                fontWeight="fontWeightBold"
               >
-                {`${props.likes} likes`}
+                {props?.username}
               </Typography>
-            </Button>
-            <Popover
-              open={likespopover}
-              onClose={closelikespopver}
-              anchorEl={anchorEl}
-              sx={{
-                "& .MuiPaper-root": {
-                  width: 200,
-                },
-              }}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
+            }
+          />
+          <CardContent sx={{ marginLeft: "10px" }}>
+            <div>
+              <Typography
+                variant="h1"
+                component="div"
+                fontSize={"15px"}
+                fontWeight="fontWeightBold"
+              >
+                {props.title}&nbsp;
+              </Typography>
+              <Typography variant="body2" fontSize={"15px"}>
+                {props.content.replace("</p>", "").replace("<p>", "")}
+              </Typography>
+            </div>
+          </CardContent>
+          {props.photo ? (
+            <CardMedia
+              sx={{ objectFit: "contain" }}
+              component="img"
+              image={props.photo}
+              alt="postimage"
+            />
+          ) : null}
+          <CardActions disableSpacing>
+            <Stack>
+              <div>
+                <IconButton>
+                  <Icon color="black" size="24px" path={mdilHeart} />
+                </IconButton>
+                <IconButton onClick={handlecomments}>
+                  <Icon color="black" size="24px" path={mdilComment} />
+                </IconButton>
+              </div>
+              <Button onClick={showlikes}>
+                <Typography
+                  variant="subtitle2"
+                  style={{ color: "black", marginRight: "20px" }}
+                  fontSize="12px"
+                >
+                  {`${props.likes} likes`}
+                </Typography>
+              </Button>
+              <Popover
+                open={likespopover}
+                onClose={closelikespopver}
+                anchorEl={anchorEl}
+                sx={{
+                  "& .MuiPaper-root": {
+                    width: 200,
+                  },
+                }}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+              >
+                <List>
+                  {likes.usernames?.map((username) => (
+                    <ListItem>
+                      <Typography variant="p">{username}</Typography>
+                    </ListItem>
+                  ))}
+                </List>
+              </Popover>
+            </Stack>
+          </CardActions>
+          <CardContent>
+            <Typography
+              variant="subtitle2"
+              style={{ color: theme.typography.subtitle2.light }}
+              fontSize="12px"
             >
-              <List>
-                {likes.usernames?.map((username) => (
-                  <ListItem>
-                    <Typography variant="p">{username}</Typography>
-                  </ListItem>
-                ))}
-              </List>
-            </Popover>
-          </Stack>
-        </CardActions>
-        <CardContent>
-          <Typography
-            variant="subtitle2"
-            style={{ color: theme.typography.subtitle2.light }}
-            fontSize="12px"
-          >
-            {`${format_date.getUTCHours()}:${
-              format_date.getUTCMinutes() < 10
-                ? format_date.getUTCMinutes() + "0"
-                : format_date.getUTCMinutes()
-            }`}{" "}
-            {format_date.getDate()}
-            {"/"}
-            {format_date.getMonth() + 1}
-            {"/"}
-            {format_date.getFullYear()}
-          </Typography>
-        </CardContent>
-      </Card>
-      <Comments opendialog={showcomments} />
-    </ThemeProvider>
+              {`${format_date.getUTCHours()}:${
+                format_date.getUTCMinutes() < 10
+                  ? format_date.getUTCMinutes() + "0"
+                  : format_date.getUTCMinutes()
+              }`}{" "}
+              {format_date.getDate()}
+              {"/"}
+              {format_date.getMonth() + 1}
+              {"/"}
+              {format_date.getFullYear()}
+            </Typography>
+          </CardContent>
+        </Card>
+        <Comments
+          opendialog={showcomments}
+          setopendialog={setShowComments}
+          postid={props.postid}
+        />
+      </ThemeProvider>
+    </>
   );
 }
