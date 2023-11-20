@@ -12,16 +12,21 @@ import MainPage from "./MainPage";
 import PostsList from "./PostsList";
 import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
+import { useParams } from "react-router-dom/dist/umd/react-router-dom.development";
+import { useTheme } from "@emotion/react";
 
-export default function Profile(props) {
+export default function Profile({ myprofile }) {
   const [profiledata, setProfileData] = useState(null);
+  const { id } = useParams();
 
   const fetchdata = async () => {
     let url = null;
-    if (props.myprofile) {
+    if (myprofile) {
       url = `http://127.0.0.1:8000/blogs/api/profile/${localStorage.getItem(
         "userid"
       )}/`;
+    } else {
+      url = `http://127.0.0.1:8000/blogs/api/profile/${id}/`;
     }
     return await fetch(url, { mode: "cors" })
       .then((response) => response.json())

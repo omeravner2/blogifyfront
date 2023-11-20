@@ -13,9 +13,9 @@ import Avatar from "@mui/material/Avatar";
 import { List, ListItem, Stack } from "@mui/material";
 import Post from "./Post";
 import Icon from "@mdi/react";
-import { mdilHome, mdilSettings, mdilPlusBox } from "@mdi/light-js";
+import { mdilHome, mdilSettings, mdilPlusBox, mdilLogout } from "@mdi/light-js";
 import AddPost from "./AddPost";
-import { Link } from "react-router-dom";
+import Link from "@mui/material/Link";
 
 export default function Navbar(props) {
   const [openaddpost, setOpenAddPost] = useState(false);
@@ -56,7 +56,7 @@ export default function Navbar(props) {
               />
               <Typography component="div" sx={{ flexGrow: 1 }}></Typography>
               <Stack direction="row" paddingRight="16%" alignItems="center">
-                <Link to="/mainpage">
+                <Link href="/mainpage">
                   <IconButton>
                     <Icon path={mdilHome} size={1} />
                   </IconButton>
@@ -66,10 +66,10 @@ export default function Navbar(props) {
                 </IconButton>
                 <Link>
                   <IconButton>
-                    <Icon path={mdilSettings} size={1} />
+                    <Icon path={mdilLogout} size={1} />
                   </IconButton>
                 </Link>
-                <Link to="/myprofile">
+                <Link href="/myprofile">
                   <IconButton>
                     <Avatar
                       alt="profilepic"

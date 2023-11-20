@@ -18,7 +18,7 @@ function App() {
             path="/mainpage"
             element={<MainPage url="http://127.0.0.1:8000/blogs/api/posts" />}
           />
-          <Route path="/profile" element={<Profile myprofile={false} />} />
+          <Route path="/profile/:id" element={<Profile myprofile={false} />} />
           <Route path="/myprofile" element={<Profile myprofile={true} />} />
         </Routes>
       </div>

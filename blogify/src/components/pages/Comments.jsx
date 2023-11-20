@@ -94,7 +94,6 @@ export default function Comments(props) {
   return (
     <ThemeProvider theme={theme}>
       <Dialog open={props.opendialog} maxWidth="md" fullWidth>
-        {" "}
         <DialogTitle
           fontSize="16px"
           sx={{ display: "flex", alignItems: "center" }}
@@ -115,6 +114,8 @@ export default function Comments(props) {
               </ListItem>
             ))}
           </List>
+        </DialogContent>
+        <DialogActions>
           <Stack spacing={2} margin={2}>
             <TextField
               inputProps={{ style: { fontSize: 14 } }}
@@ -141,8 +142,7 @@ export default function Comments(props) {
           >
             Post
           </Button>
-        </DialogContent>
-        <DialogActions></DialogActions>
+        </DialogActions>
       </Dialog>
     </ThemeProvider>
   );

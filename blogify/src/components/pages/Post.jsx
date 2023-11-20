@@ -5,6 +5,7 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
+import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { Button, IconButton, List, ListItem, Popover } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -48,8 +49,9 @@ export default function Post(props) {
             "Content-Type": "application/json",
           },
         }
-      );
-      liked ? setLiked(false) : setLiked(true);
+      )
+        .then((response) => response.json())
+        .then((d) => setLikes(d.data));
     } catch (error) {
       console.error("Error toggling like on the post:", error);
     }
@@ -59,13 +61,9 @@ export default function Post(props) {
 
   const fetchdata = async () => {
     try {
-      const response = fetch(url, { mode: "cors" })
+      const response = await fetch(url, { mode: "cors" })
         .then((response) => response.json())
         .then((d) => setLikes(d));
-      if (likes.users_id.includes(localStorage.getItem("userid"))) {
-        setLiked(true);
-        alert("here");
-      }
     } catch (error) {
       console.error(error);
     }
@@ -85,6 +83,9 @@ export default function Post(props) {
       fontFamily: ["Nunito"].join(","),
       subtitle2: {
         light: "#7B7D7D",
+      },
+      links: {
+        main: "#17202A",
       },
     },
   });
@@ -107,14 +108,19 @@ export default function Post(props) {
               </IconButton>
             }
             title={
-              <Typography
-                sx={{ marginLeft: "-20px" }}
-                variant="h1"
-                fontSize="17px"
-                fontWeight="fontWeightBold"
+              <Link
+                href={`/profile/${props.userid}`}
+                color={theme.typography.links.main}
               >
-                {props?.username}
-              </Typography>
+                <Typography
+                  sx={{ marginLeft: "-20px" }}
+                  variant="h1"
+                  fontSize="17px"
+                  fontWeight="fontWeightBold"
+                >
+                  {props?.username}
+                </Typography>
+              </Link>
             }
           />
           <CardContent sx={{ marginLeft: "10px" }}>
@@ -144,7 +150,9 @@ export default function Post(props) {
             <Stack>
               <div>
                 <IconButton onClick={handlelike}>
-                  {liked ? (
+                  {likes.users_id?.includes(
+                    parseInt(localStorage.getItem("userid"))
+                  ) ? (
                     <Icon color="red" size="24px" path={mdiHeart} />
                   ) : (
                     <Icon color="black" size="24px" path={mdilHeart} />
@@ -160,7 +168,7 @@ export default function Post(props) {
                   style={{ color: "black", marginRight: "20px" }}
                   fontSize="12px"
                 >
-                  {`${props.likes} likes`}
+                  {`${likes.users_id?.length} likes`}
                 </Typography>
               </Button>
               <Popover
