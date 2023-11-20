@@ -113,9 +113,7 @@ export default function Comments(props) {
                 <Typography>{comment.body}</Typography>
               </ListItem>
             ))}
-          </List>
-        </DialogContent>
-        <DialogActions>
+          </List>{" "}
           <Stack spacing={2} margin={2}>
             <TextField
               inputProps={{ style: { fontSize: 14 } }}
@@ -142,7 +140,8 @@ export default function Comments(props) {
           >
             Post
           </Button>
-        </DialogActions>
+        </DialogContent>
+        <DialogActions></DialogActions>
       </Dialog>
     </ThemeProvider>
   );

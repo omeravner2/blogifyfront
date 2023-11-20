@@ -6,6 +6,7 @@ import PostsList from "./PostsList.jsx";
 import { useEffect, useState } from "react";
 
 export default function MainPage(props) {
+  const [currentPage, setCurrentPage] = useState(1);
   const isauthenticated = !!localStorage.getItem("userid");
   const params = new URLSearchParams();
   params.append("userid", localStorage.getItem("userid"));
@@ -14,7 +15,9 @@ export default function MainPage(props) {
 
   const fetchdata = async () => {
     try {
-      let response = await fetch(url + "?" + params, { mode: "cors" });
+      let response = await fetch(url + `?page=${currentPage}&` + params, {
+        mode: "cors",
+      });
       response = await response.json();
       setData(response);
     } catch (error) {
