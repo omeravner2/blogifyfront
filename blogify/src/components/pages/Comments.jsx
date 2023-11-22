@@ -16,8 +16,6 @@ import {
   ListItem,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import Icon from "@mdi/react";
-import { mdilPlus } from "@mdi/light-js";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import axios from "axios";

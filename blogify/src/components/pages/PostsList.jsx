@@ -4,6 +4,7 @@ import { List, ListItem, Typography, darkScrollbar } from "@mui/material";
 import Post from "./Post.jsx";
 
 export default function PostsList(props) {
+  console.log(props.post_list);
   return (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>

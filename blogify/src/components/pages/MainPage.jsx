@@ -1,6 +1,6 @@
 import React from "react";
-import { List, ListItem } from "@mui/material";
-import Post from "./Post.jsx";
+import { Box, Button, List, ListItem } from "@mui/material";
+
 import Navbar from "./Navbar.jsx";
 import PostsList from "./PostsList.jsx";
 import { useEffect, useState } from "react";
@@ -11,34 +11,46 @@ export default function MainPage(props) {
   const params = new URLSearchParams();
   params.append("userid", localStorage.getItem("userid"));
   const url = props.url;
-  const [data, setData] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [profile, setProfile] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchdata = async () => {
+    setLoading(true);
     try {
       let response = await fetch(url + `?page=${currentPage}&` + params, {
         mode: "cors",
       });
       response = await response.json();
-      setData(response);
+      setPosts([...posts, ...response.posts]);
+      setProfile(response.user_profile);
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
+  };
+
+  const handleLoadMore = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
   };
 
   useEffect(() => {
     fetchdata();
-  }, []);
+  }, [currentPage]);
 
-  localStorage.setItem(
-    "profile_picture",
-    data[0]?.user_profile.profile_picture
-  );
+  localStorage.setItem("profile_picture", profile?.profile_picture);
   return (
     <>
       {isauthenticated ? (
         <>
           <Navbar />
-          <PostsList post_list={data[0]?.posts} />
+          {posts ? <PostsList post_list={posts} /> : null}
+          <Box textAlign="center">
+            <Button onClick={handleLoadMore} sx={{ color: "#7B7D7D" }}>
+              Load More
+            </Button>
+          </Box>
         </>
       ) : (
         <p color="black">something</p>
